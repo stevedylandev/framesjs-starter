@@ -70,12 +70,12 @@ export default async function Home({
         {state.page !== 1 ? (
           <FrameButton onClick={dispatch}>←</FrameButton>
         ) : null}
-        <FrameButton href="https://www.pinata.cloud/blog/how-to-make-a-frame-on-farcaster-using-ipfs">Read full post</FrameButton>
         {state.page < 7 ? (
           <FrameButton onClick={dispatch}>→</FrameButton>
         ) : (
         null
         )}
+        <FrameButton href="https://www.pinata.cloud/blog/how-to-make-a-frame-on-farcaster-using-ipfs">Read full post</FrameButton>
       </FrameContainer>
     </div>
   );
