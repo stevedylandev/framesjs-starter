@@ -20,11 +20,11 @@ const reducer: FrameReducer<State> = (state, action) => {
   const buttonIndex = action.postBody?.untrustedData.buttonIndex;
   return {
     page:
-      state.page === 1 && buttonIndex === 2
-        ? 3
-        : buttonIndex === 2
+      state.page === 1 && buttonIndex === 1
+        ? 2
+        : buttonIndex === 1
           ? state.page - 1
-          : buttonIndex === 3
+          : buttonIndex === 2
             ? state.page + 1
             : 1,
   };
@@ -63,19 +63,20 @@ export default async function Home({
         <FrameImage
           src={
             state.page === 1
-              ? "https://dweb.mypinata.cloud/ipfs/Qme4FXhoxHHfyzTfRxSpASbMF8kajLEPkRQWhwWu9pkUjm/0.png"
-              : `https://dweb.mypinata.cloud/ipfs/Qme4FXhoxHHfyzTfRxSpASbMF8kajLEPkRQWhwWu9pkUjm/${state.page}.png`
+              ? "https://dweb.mypinata.cloud/ipfs/Qme4aAq77NUxebAK2RbxF1ZJ1hZqqRRCYq5qXjbgGF4wAH/1.png"
+              : `https://dweb.mypinata.cloud/ipfs/Qme4aAq77NUxebAK2RbxF1ZJ1hZqqRRCYq5qXjbgGF4wAH/${state.page}.png`
           }
         />
-        <FrameButton href="https://www.pinata.cloud/blog/how-to-make-a-frame-on-farcaster-using-ipfs">Read full post</FrameButton>
         {state.page !== 1 ? (
           <FrameButton onClick={dispatch}>←</FrameButton>
         ) : null}
-        {state.page < 7 ? (
+        {state.page < lastPage ? (
           <FrameButton onClick={dispatch}>→</FrameButton>
         ) : (
         null
         )}
+        <FrameButton href="https://www.pinata.cloud/blog/how-to-make-a-frame-on-farcaster-using-ipfs">Read full post</FrameButton>
+        <FrameButton href="https://hub.pinata.cloud">Try our Hub</FrameButton>
       </FrameContainer>
     </div>
   );
