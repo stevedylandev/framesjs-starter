@@ -9,23 +9,28 @@ import {
   validateActionSignature,
 } from "frames.js/next/server";
 import Link from "next/link";
-import { generateImage } from "./generate-image";
 
 type State = {
-  active: string;
-  total_button_presses: number;
+  page: number;
 };
 
-const initialState = { active: "1", total_button_presses: 0 };
+const initialState = { page: 1 };
 
 const reducer: FrameReducer<State> = (state, action) => {
+  const buttonIndex = action.postBody?.untrustedData.buttonIndex;
   return {
-    total_button_presses: state.total_button_presses + 1,
-    active: action.postBody?.untrustedData.buttonIndex
-      ? String(action.postBody?.untrustedData.buttonIndex)
-      : "1",
+    page:
+      state.page === 1 && buttonIndex === 1
+        ? 2
+        : buttonIndex === 1
+        ? state.page - 1
+        : buttonIndex === 2
+        ? state.page + 1
+        : 1,
   };
 };
+
+const lastPage = 6;
 
 // This is a react server component only
 export default async function Home({
@@ -43,33 +48,33 @@ export default async function Home({
     previousFrame
   );
 
-  // Here: do a server side side effect either sync or async (using await), such as minting an NFT if you want.
-  // example: load the users credentials & check they have an NFT
-  const imageSvg = await generateImage(validMessage!);
-
-  console.log(state);
-
   // then, when done, return next frame
   return (
     <div>
-      Starter kit. <Link href="/debug">Debug</Link>
+      <a href="https://framesjs.org">frames.js</a> homeframe{" "}
+      {process.env.NODE_ENV === "development" ? (
+        <Link href="/debug">Debug</Link>
+      ) : null}
       <FrameContainer
         postUrl="/frames"
         state={state}
         previousFrame={previousFrame}
       >
         <FrameImage
-          src={`https://dweb.mypinata.cloud/ipfs/QmRj4D92h399uJYd7HWbTJk6TRaVa9rR8hUCyCcJaGbLNt/${state.active}.png`}
+          src={
+            state.page === 1
+              ? "https://dweb.mypinata.cloud/ipfs/Qme4FXhoxHHfyzTfRxSpASbMF8kajLEPkRQWhwWu9pkUjm/0.png"
+              : `https://dweb.mypinata.cloud/ipfs/Qme4FXhoxHHfyzTfRxSpASbMF8kajLEPkRQWhwWu9pkUjm/${state.page}.png`
+          }
         />
-        <FrameInput text="put some text here" />
-        <FrameButton onClick={dispatch}>
-          {state?.active === "1" ? "Active" : "Inactive"}
-        </FrameButton>
-        <FrameButton onClick={dispatch}>
-          {state?.active === "2" ? "Active" : "Inactive"}
-        </FrameButton>
-        <FrameButton href={`http://localhost:3001/`}>Page link</FrameButton>
-        <FrameButton href={`https://www.google.com`}>External</FrameButton>
+        {state.page !== 1 ? (
+          <FrameButton onClick={dispatch}>←</FrameButton>
+        ) : null}
+        {state.page < 7 ? (
+          <FrameButton onClick={dispatch}>→</FrameButton>
+        ) : (
+          <FrameButton href="https://framesjs.org">Open frames.js</FrameButton>
+        )}
       </FrameContainer>
     </div>
   );
