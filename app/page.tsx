@@ -59,7 +59,7 @@ export default async function Home({
         previousFrame={previousFrame}
       >
         <FrameImage
-          src={`data:image/svg+xml,${encodeURIComponent(imageSvg)}`}
+          src={`https://dweb.mypinata.cloud/ipfs/QmRj4D92h399uJYd7HWbTJk6TRaVa9rR8hUCyCcJaGbLNt/${state.active}`}
         />
         <FrameInput text="put some text here" />
         <FrameButton onClick={dispatch}>
