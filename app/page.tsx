@@ -23,10 +23,10 @@ const reducer: FrameReducer<State> = (state, action) => {
       state.page === 1 && buttonIndex === 1
         ? 2
         : buttonIndex === 1
-        ? state.page - 1
-        : buttonIndex === 2
-        ? state.page + 1
-        : 1,
+          ? state.page - 1
+          : buttonIndex === 2
+            ? state.page + 1
+            : 1,
   };
 };
 
@@ -45,13 +45,13 @@ export default async function Home({
   const [state, dispatch] = useFramesReducer<State>(
     reducer,
     initialState,
-    previousFrame
+    previousFrame,
   );
 
   // then, when done, return next frame
   return (
     <div>
-      <a href="https://framesjs.org">frames.js</a> homeframe{" "}
+      <a href="https://hub.pinata.cloud">hub.pinata.cloud</a> homeframe{" "}
       {process.env.NODE_ENV === "development" ? (
         <Link href="/debug">Debug</Link>
       ) : null}
@@ -70,10 +70,11 @@ export default async function Home({
         {state.page !== 1 ? (
           <FrameButton onClick={dispatch}>←</FrameButton>
         ) : null}
+        <FrameButton href="https://www.pinata.cloud/blog/how-to-make-a-frame-on-farcaster-using-ipfs">Read full post</FrameButton>
         {state.page < 7 ? (
           <FrameButton onClick={dispatch}>→</FrameButton>
         ) : (
-          <FrameButton href="https://framesjs.org">Open frames.js</FrameButton>
+        null
         )}
       </FrameContainer>
     </div>
