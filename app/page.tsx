@@ -20,11 +20,11 @@ const reducer: FrameReducer<State> = (state, action) => {
   const buttonIndex = action.postBody?.untrustedData.buttonIndex;
   return {
     page:
-      state.page === 1 && buttonIndex === 1
-        ? 2
-        : buttonIndex === 1
+      state.page === 1 && buttonIndex === 2
+        ? 3
+        : buttonIndex === 2
           ? state.page - 1
-          : buttonIndex === 2
+          : buttonIndex === 3
             ? state.page + 1
             : 1,
   };
@@ -67,6 +67,7 @@ export default async function Home({
               : `https://dweb.mypinata.cloud/ipfs/Qme4FXhoxHHfyzTfRxSpASbMF8kajLEPkRQWhwWu9pkUjm/${state.page}.png`
           }
         />
+        <FrameButton href="https://www.pinata.cloud/blog/how-to-make-a-frame-on-farcaster-using-ipfs">Read full post</FrameButton>
         {state.page !== 1 ? (
           <FrameButton onClick={dispatch}>←</FrameButton>
         ) : null}
@@ -75,7 +76,6 @@ export default async function Home({
         ) : (
         null
         )}
-        <FrameButton href="https://www.pinata.cloud/blog/how-to-make-a-frame-on-farcaster-using-ipfs">Read full post</FrameButton>
       </FrameContainer>
     </div>
   );
